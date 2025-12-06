@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <!-- Meta Tags for SEO and Social Media -->
+    <meta name="description" content="LifeFlow Blood Donation Center - Login to manage blood donation operations and save lives">
+    <meta name="keywords" content="blood donation, lifeflow, login, donor management, healthcare">
+    <meta name="author" content="LifeFlow Blood Donation Center">
+    <meta name="robots" content="index, follow">
+    <title>LifeFlow - Donor Management</title>
+    <!-- edit this later -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .navbar {
+            background: #DC2626 !important;
+        }
+        .status-active {
+            color: #16A34A;
+            font-weight: bold;
+        }
+        .status-inactive {
+            color: #DC2626;
+            font-weight: bold;
+        }
+        .table-responsive {
+            max-height: 500px;
+        }
+        .bg-purple {
+            background-color: #6f42c1 !important;
+        }
+
+        /* Dark Mode Styles using data-bs-theme*/
+        [data-bs-theme="dark"] {
+            background-color: #1a1a1a;
+            color: #ffffff;
+        }
+
+        [data-bs-theme="dark"] .card {
+            background-color: #2d2d2d;
+            color: #ffffff;
+            border-color: #444;
+        }
+
+        [data-bs-theme="dark"] .table {
+            background-color: #2d2d2d;
+            color: #ffffff;
+            border-color: #444;
+        }
+
+        [data-bs-theme="dark"] .table-striped tbody tr:nth-of-type(odd) {
+            background-color: #3d3d3d;
+        }
+
+        [data-bs-theme="dark"] .table-dark {
+            background-color: #212529 !important;
+        }
+
+        [data-bs-theme="dark"] .table-dark th {
+            background-color: #212529 !important;
+            border-color: #373b3e;
+        }
+
+        [data-bs-theme="dark"] .form-control {
+            background-color: #2d2d2d;
+            color: #ffffff !important;
+            border-color: #555;
+        }
+
+        [data-bs-theme="dark"] .form-control::placeholder {
+            color: #cccccc !important;
+        }
+
+        [data-bs-theme="dark"] .form-control:focus {
+            background-color: #2d2d2d;
+            color: #ffffff;
+            border-color: #DC2626;
+            box-shadow: 0 0 0 0.2rem rgba(220, 38, 38, 0.25);
+        }
+
+        /* Navbar fixes */
+        [data-bs-theme="dark"] .navbar {
+            background: #8B1A1A !important; /* Darker red for dark mode */
+        }
+
+        [data-bs-theme="dark"] .navbar-nav .nav-link {
+            color: rgba(255, 255, 255, 0.8) !important;
+        }
+
+        [data-bs-theme="dark"] .navbar-nav .nav-link.active {
+            color: #ffffff !important;
+            background-color: rgba(255, 255, 255, 0.15) !important;
+        }
+
+        [data-bs-theme="dark"] footer {
+            background-color: #1a1a1a !important;
+            border-top: 1px solid #444;
+        }
+
+        /* Badge colors for dark mode */
+        [data-bs-theme="dark"] .badge {
+            color: white !important;
+        }
+        
+        /* Custom button styling */
+        .btn-outline-light:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Logo styling */
+        .logo-img {
+            filter: brightness(0) invert(1);
+        }
+        /* Fixed Badge colors for dark mode */
+        [data-bs-theme="dark"] .badge {
+        color: white !important;
+        }
+
+        /* Specific badge fixes for dark backgrounds */
+        [data-bs-theme="dark"] .badge.bg-dark {
+        background-color: #6c757d !important; /* Change dark to gray in dark mode */
+        }
+
+        [data-bs-theme="dark"] .badge.bg-secondary {
+        background-color: #845ef7 !important; /* Brighter purple for secondary */
+        }
+
+        [data-bs-theme="dark"] .badge.bg-light {
+        background-color: #495057 !important; /* Dark gray for light badges */
+        }
+
+        /* Ensure text is always visible in badges */
+        .badge {
+        color: white !important;
+        }
+
+        footer {
+    border-top: none !important;
+    margin-bottom: 0 !important;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.container.mt-4 {
+    flex: 1;
+}
+
+
+
+</style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="blood-test.png" alt="Logo" width="30" height="30" class="d-inline-block align-text-top">
+                LifeFlow
+            </a>
+            
+            <!-- Right side: Mobile Only buttons -->
+            <div class="d-flex align-items-center d-lg-none">
+                <!-- Dark Mode Button - Mobile -->
+                <button class="btn btn-outline-light btn-sm me-2" id="darkModeToggleMobile">
+                    <i class="bi bi-moon-stars-fill" id="darkModeIconMobile"></i>
+                </button>
+
+                <!-- Logout Icon - Mobile -->
+                <a class="btn btn-outline-warning btn-sm me-2" href="index.html" title="Logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                </a>
+
+                <!-- Hamburger Menu - Mobile Only -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <!-- Navigation items on LEFT side -->
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="dashboard.html">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="donors.html">Donors</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="inventory.html">Inventory</a>
+                    </li>
+                </ul>
+
+                <!-- Right side items - Desktop Only -->
+                <div class="d-none d-lg-flex align-items-center">
+                    <!-- Dark Mode Button - Desktop -->
+                    <button class="btn btn-outline-light btn-sm me-2" id="darkModeToggleDesktop">
+                        <i class="bi bi-moon-stars-fill" id="darkModeIconDesktop"></i>
+                    </button>
+
+                    <!-- Logout Icon - Desktop -->
+                    <a class="btn btn-outline-warning btn-sm" href="index.html" title="Logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Donors Content -->
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Donor Management</h2>
+            <div class="d-flex">
+                <input type="text" class="form-control me-2" placeholder="Search donors..." id="searchInput">
+                <button class="btn btn-danger">
+                    <i class="fas fa-plus me-1"></i> Add New Donor
+                </button>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card text-white bg-primary">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h4 class="mb-0">7</h4>
+                                <p class="mb-0">Total Donors</p>
+                            </div>
+                            <div class="align-self-center">
+                                <i class="fas fa-users fa-2x"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-success">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h4 class="mb-0">5</h4>
+                                <p class="mb-0">Active Donors</p>
+                            </div>
+                            <div class="align-self-center">
+                                <i class="fas fa-heartbeat fa-2x"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-warning">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h4 class="mb-0">2</h4>
+                                <p class="mb-0">Inactive Donors</p>
+                            </div>
+                            <div class="align-self-center">
+                                <i class="fas fa-user-slash fa-2x"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-info">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h4 class="mb-0">4</h4>
+                                <p class="mb-0">This Month</p>
+                            </div>
+                            <div class="align-self-center">
+                                <i class="fas fa-calendar-alt fa-2x"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Donors Table -->
+        <div class="card mt-4">
+            <div class="card-header bg-dark text-white">
+                <h5 class="mb-0"><i class="fas fa-list me-2"></i>Donor List</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Donor ID</th>
+                                <th>Name</th>
+                                <th>Blood Type</th>
+                                <th>Last Donation</th>
+                                <th>Contact Number</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="donorsTable">
+                            <!-- Donor data will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- Footer -->
+<footer class="bg-dark text-light mt-5 pt-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 mb-4">
+                <h6 class="text-danger mb-3"><i class="fas fa-tint me-1"></i> Quick Stats</h6>
+                <div class="row g-2">
+                    <div class="col-6">
+                        <div class="bg-dark rounded p-2 border-start border-danger border-3">
+                            <div class="text-danger fw-bold">150</div>
+                            <small class="opacity-75">Donors</small>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="bg-dark rounded p-2 border-start border-primary border-3">
+                            <div class="text-primary fw-bold">119</div>
+                            <small class="opacity-75">Active</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3 mb-4">
+                <h6 class="text-danger mb-3"><i class="fas fa-clock me-1"></i> Operation Hours</h6>
+                <ul class="list-unstyled small">
+                    <li class="mb-1">Mon-Fri: 8:00 AM - 8:00 PM</li>
+                    <li class="mb-1">Saturday: 9:00 AM - 5:00 PM</li>
+                    <li class="mb-1">Sunday: 10:00 AM - 4:00 PM</li>
+                    <li class="mb-1 text-danger">Emergency: 24/7</li>
+                </ul>
+            </div>
+            
+            <div class="col-md-3 mb-4">
+                <h6 class="text-danger mb-3"><i class="fas fa-link me-1"></i> Quick Links</h6>
+                <ul class="list-unstyled small">
+                    <li class="mb-1"><a href="dashboard.html" class="text-light text-decoration-none">Dashboard</a></li>
+                    <li class="mb-1"><a href="donors.html" class="text-light text-decoration-none">Donor List</a></li>
+                    <li class="mb-1"><a href="inventory.html" class="text-light text-decoration-none">Inventory</a></li>
+                    <li class="mb-1"><a href="#" class="text-light text-decoration-none">Schedule Donation</a></li>
+                </ul>
+            </div>
+            
+            <div class="col-md-3 mb-4">
+                <h6 class="text-danger mb-3"><i class="fas fa-address-card me-1"></i> Contact</h6>
+                <ul class="list-unstyled small">
+                    <li class="mb-2">
+                        <i class="fas fa-map-marker-alt text-danger me-2"></i>
+                        123 LifeFlow Center, KL
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-phone text-danger me-2"></i>
+                        +60 89-673 903
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-envelope text-danger me-2"></i>
+                        donate@lifeflow.com
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <hr class="opacity-25">
+        
+        <div class="text-center pt-3">
+            <p class="mb-0 small opacity-75">
+                <i class="fas fa-shield-alt me-1"></i> Licensed by Ministry of Health Malaysia | 
+                <i class="fas fa-heart text-danger me-1 ms-2"></i> Registered Charity: LFL-2025-001
+            </p>
+            <p class="mt-2 small opacity-50">
+                &copy; 2025 LifeFlow Blood Donation Center. Version 2.1.0
+            </p>
+        </div>
+    </div>
+</footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Donors Data & Script -->
+    <script>
+
+            document.addEventListener('DOMContentLoaded', function() {
+        document.body.style.zoom = "80%";
+    });
+    
+        // Sample donors data
+        const donors = [
+            { id: "0001", name: "Ahmad Faiz", bloodType: "A+", lastDonation: "10/15/2025", contact: "012-3456789", status: "Active" },
+            { id: "0002", name: "Nur Aisyah", bloodType: "B-", lastDonation: "9/20/2025", contact: "019-8765432", status: "Active" },
+            { id: "0003", name: "Lim Wai Jie", bloodType: "O+", lastDonation: "8/5/2025", contact: "017-2345678", status: "Inactive" },
+            { id: "0004", name: "Siti Hajar", bloodType: "O-", lastDonation: "11/1/2025", contact: "013-9876543", status: "Active" },
+            { id: "0005", name: "Muhammad Ali", bloodType: "AB+", lastDonation: "7/30/2025", contact: "016-1234567", status: "Active" },
+            { id: "0006", name: "Sarah Johnson", bloodType: "A-", lastDonation: "10/10/2025", contact: "011-5551234", status: "Active" },
+            { id: "0007", name: "Raj Kumar", bloodType: "B+", lastDonation: "9/15/2025", contact: "018-7778889", status: "Inactive" }
+        ];
+
+        // Function to display donors in table
+        function displayDonors(donorsArray) {
+            const tableBody = document.getElementById('donorsTable');
+            tableBody.innerHTML = '';
+            
+            donorsArray.forEach(donor => {
+                const statusClass = donor.status === 'Active' ? 'status-active' : 'status-inactive';
+                
+                // Different colors for each blood type
+                const bloodTypeColors = {
+                    'A+': 'bg-primary',
+                    'A-': 'bg-info',
+                    'B+': 'bg-success', 
+                    'B-': 'bg-warning',
+                    'O+': 'bg-danger',
+                    'O-': 'bg-dark',
+                    'AB+': 'bg-purple',
+                    'AB-': 'bg-secondary'
+                };
+                
+                const bloodTypeClass = bloodTypeColors[donor.bloodType] || 'bg-secondary';
+                
+                const row = `
+                    <tr>
+                        <td>${donor.id}</td>
+                        <td>${donor.name}</td>
+                        <td><span class="badge ${bloodTypeClass} text-white">${donor.bloodType}</span></td>
+                        <td>${donor.lastDonation}</td>
+                        <td>${donor.contact}</td>
+                        <td><span class="${statusClass}">${donor.status}</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary me-1">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                tableBody.innerHTML += row;
+            });
+        }
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const filteredDonors = donors.filter(donor => 
+                donor.name.toLowerCase().includes(searchTerm) ||
+                donor.bloodType.toLowerCase().includes(searchTerm) ||
+                donor.contact.includes(searchTerm)
+            );
+            displayDonors(filteredDonors);
+        });
+
+        // Initial display
+        displayDonors(donors);
+
+        // Dark Mode Toggle - Handle both mobile and desktop buttons
+        const darkModeToggleMobile = document.getElementById('darkModeToggleMobile');
+        const darkModeToggleDesktop = document.getElementById('darkModeToggleDesktop');
+        const darkModeIconMobile = document.getElementById('darkModeIconMobile');
+        const darkModeIconDesktop = document.getElementById('darkModeIconDesktop');
+        const htmlElement = document.documentElement;
+
+        // Initialize theme
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        htmlElement.setAttribute('data-bs-theme', currentTheme);
+        updateIcons(currentTheme);
+        
+        // Add event listeners to both buttons
+        darkModeToggleMobile.addEventListener('click', toggleDarkMode);
+        darkModeToggleDesktop.addEventListener('click', toggleDarkMode);
+
+        function toggleDarkMode() {
+            const currentTheme = htmlElement.getAttribute('data-bs-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+
+            htmlElement.setAttribute('data-bs-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateIcons(newTheme);
+        }
+
+        function updateIcons(theme) {
+            if (theme === 'dark') {
+                darkModeIconMobile.className = 'bi bi-sun-fill';
+                darkModeIconDesktop.className = 'bi bi-sun-fill';
+            } else {
+                darkModeIconMobile.className = 'bi bi-moon-stars-fill';
+                darkModeIconDesktop.className = 'bi bi-moon-stars-fill';
+            }
+        }
+    </script>
+</body>
+</html>

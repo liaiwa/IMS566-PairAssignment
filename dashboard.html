@@ -1,0 +1,1527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Meta Tags for SEO and Social Media -->
+    <meta name="description" content="LifeFlow Blood Donation Center - Login to manage blood donation operations and save lives">
+    <meta name="keywords" content="blood donation, lifeflow, login, donor management, healthcare">
+    <meta name="author" content="LifeFlow Blood Donation Center">
+    <meta name="robots" content="index, follow">
+    <title>LifeFlow - Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- ApexCharts Library -->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<style>
+    .blood-card {
+        border-left: 4px solid #DC2626;
+        transition: transform 0.3s ease;
+    }
+
+    footer {
+        margin-bottom: -100px;
+    }
+
+    .blood-card:hover {
+        transform: translateY(-5px);
+    }
+    .navbar {
+        background: #DC2626 !important;
+    }
+    .chart-container {
+        height: 250px;
+    }
+    .stat-card {
+        border-radius: 10px;
+        overflow: hidden;
+    }
+    .stat-icon {
+        font-size: 2.5rem;
+        opacity: 0.8;
+    }
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    .bg-gradient-success {
+        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    }
+    .bg-gradient-warning {
+        background: linear-gradient(135deg, #f46b45 0%, #eea849 100%);
+    }
+    .bg-gradient-info {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    }
+
+    /* AB+ badge in light mode */
+    .badge.bg-purple {
+        background-color: #7e22ce !important;
+        color: white !important;
+    }
+
+    /* Dark Mode Styles */
+    /* Add this to your dark mode CSS */
+[data-bs-theme="dark"] .border-dark {
+    border-color: rgba(255, 255, 255, 0.25) !important;
+}
+
+[data-bs-theme="dark"] .border-start.border-2.border-dark.border-opacity-25 {
+    border-color: rgba(255, 255, 255, 0.25) !important;
+    opacity: 1 !important;
+}
+
+[data-bs-theme="dark"] {
+        background-color: #1a1a1a;
+        color: #ffffff;
+    }
+
+    [data-bs-theme="dark"] .card {
+        background-color: #2d2d2d;
+        color: #ffffff;
+        border-color: #444;
+    }
+
+    [data-bs-theme="dark"] .table {
+        background-color: #2d2d2d;
+        color: #ffffff;
+        border-color: #444;
+    }
+
+    [data-bs-theme="dark"] .table-striped tbody tr:nth-of-type(odd) {
+        background-color: #3d3d3d;
+    }
+
+    [data-bs-theme="dark"] .table-dark {
+        background-color: #212529 !important;
+    }
+
+    [data-bs-theme="dark"] .table-dark th {
+        background-color: #212529 !important;
+        border-color: #373b3e;
+    }
+
+    /* Navbar fixes */
+    [data-bs-theme="dark"] .navbar {
+        background: #8B1A1A !important;
+    }
+
+    [data-bs-theme="dark"] .navbar-nav .nav-link {
+        color: rgba(255, 255, 255, 0.8) !important;
+    }
+
+    [data-bs-theme="dark"] .navbar-nav .nav-link.active {
+        color: #ffffff !important;
+        background-color: rgba(255, 255, 255, 0.15) !important;
+    }
+
+    [data-bs-theme="dark"] footer {
+        background-color: #1a1a1a !important;
+        border-top: 1px solid #444;
+    }
+
+    /* Badge colors for dark mode - FIXED VERSION */
+    [data-bs-theme="dark"] .badge.bg-primary {
+        background-color: #0d6efd !important;
+        color: white !important;
+    }
+    
+    [data-bs-theme="dark"] .badge.bg-info {
+        background-color: #0dcaf0 !important;
+        color: white !important;
+    }
+    
+    [data-bs-theme="dark"] .badge.bg-success {
+        background-color: #198754 !important;
+        color: white !important;
+    }
+    
+    [data-bs-theme="dark"] .badge.bg-warning {
+        background-color: #ffc107 !important;
+        color: #000 !important;
+    }
+    
+    [data-bs-theme="dark"] .badge.bg-danger {
+        background-color: #dc3545 !important;
+        color: white !important;
+    }
+    
+    [data-bs-theme="dark"] .badge.bg-dark {
+        background-color: #6c757d !important;
+        color: white !important;
+    }
+    
+    [data-bs-theme="dark"] .badge.bg-purple {
+        background-color: #6f42c1 !important;
+        color: white !important;
+    }
+    
+    [data-bs-theme="dark"] .badge.bg-secondary {
+        background-color: #339af0 !important;
+        color: white !important;
+    }
+    
+    .badge {
+        color: white !important;
+    }
+    
+    [data-bs-theme="dark"] .badge.bg-warning {
+        color: #000 !important;
+    }
+
+    /* Specific badge fixes for dark backgrounds */
+    [data-bs-theme="dark"] .badge.bg-light {
+        background-color: #495057 !important;
+        color: white !important;
+    }
+
+    /* Text color fixes for dark mode */
+    [data-bs-theme="dark"] .text-dark {
+        color: #ffffff !important;
+    }
+    
+    [data-bs-theme="dark"] .text-muted {
+        color: rgba(255, 255, 255, 0.6) !important;
+    }
+    
+    [data-bs-theme="dark"] .text-primary {
+        color: #0d6efd !important;
+    }
+    
+    [data-bs-theme="dark"] .text-danger {
+        color: #dc3545 !important;
+    }
+    
+    [data-bs-theme="dark"] .text-success {
+        color: #198754 !important;
+    }
+    
+    [data-bs-theme="dark"] .text-warning {
+        color: #ffc107 !important;
+    }
+
+    /* Light background fixes for dark mode */
+    [data-bs-theme="dark"] .bg-light {
+        background-color: #2d3748 !important;
+    }
+    
+    [data-bs-theme="dark"] .bg-light.rounded {
+        background-color: #374151 !important;
+        border: 1px solid #4B5563;
+    }
+
+    .btn-outline-light:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+        .chart-container {
+            height: 200px;
+        }
+        .stat-icon {
+            font-size: 2rem;
+        }
+        .state-flag {
+            width: 16px;
+            height: 12px;
+        }
+    }
+
+    /* Alert styling */
+    .alert-blood {
+        border-left: 4px solid #DC2626;
+        background-color: rgba(220, 38, 38, 0.1);
+    }
+
+    /* Progress bars */
+    .progress {
+        height: 8px;
+    }
+
+    .apexcharts-legend-text {
+        font-weight: 500;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: rgba(220, 38, 38, 0.05);
+    }
+    
+    /* Percentage bar styling */
+    .percentage-bar {
+        height: 8px;
+        background-color: #e9ecef;
+        border-radius: 4px;
+        overflow: hidden;
+        width: 100px;
+    }
+    
+    .percentage-fill {
+        height: 100%;
+        border-radius: 4px;
+    }
+    
+    .table-sm td, .table-sm th {
+        padding: 0.5rem;
+    }
+    
+    .table-clean td, .table-clean th {
+        vertical-align: middle;
+    }
+    
+    .card-body-compact {
+        padding: 0.75rem;
+    }
+    
+    /* State flag styling */
+    .state-flag {
+        width: 22px;
+        height: 12px;
+        display: inline-block;
+        background-size: cover;
+    }
+    
+    [data-bs-theme="dark"] .state-flag {
+        border-color: #444;
+    }
+    
+    /* Frequency badges */
+    .frequency-high {
+        background-color: #198754 !important;
+        color: white !important;
+    }
+    
+    .frequency-medium {
+        background-color: #ffc107 !important;
+        color: #000 !important;
+    }
+    
+    .frequency-low {
+        background-color: #6c757d !important;
+        color: white !important;
+    }
+    
+    /* Critical types styling */
+    .critical-types {
+        font-size: 0.85em;
+        line-height: 1.3;
+    }
+
+    /* Key Insights mobile alignment */
+    @media (max-width: 576px) {
+        /* Stack the insight cards vertically on mobile */
+        .key-insights-row .row.g-2 {
+            display: flex !important;
+            flex-direction: column !important;
+        }
+        
+        /* Make each insight card full width on mobile */
+        .key-insights-row .col-12.col-sm-4 {
+            width: 100% !important;
+            margin-bottom: 12px !important;
+        }
+        
+        /* Center align content on mobile */
+        .key-insights-row .d-flex.align-items-center {
+            justify-content: center !important;
+            text-align: center !important;
+        }
+        
+        /* Adjust icon and text spacing */
+        .key-insights-row .bg-primary.bg-opacity-10 {
+            margin-right: 12px !important;
+            padding: 10px !important;
+        }
+        
+        /* Make text more readable on mobile */
+        .key-insights-row small.text-muted.d-block {
+            font-size: 13px !important;
+        }
+        
+        .key-insights-row span.fw-bold {
+            font-size: 15px !important;
+        }
+
+        /* Fix Key Insights icon sizes */
+    [class*="bg-opacity-10"] i.fas {
+        font-size: 1.2rem !important;
+        width: 1.2rem !important;
+        height: 1.2rem !important;
+        display: inline-block !important;
+        text-align: center !important;
+    }
+
+    /* Ensure all icon containers are same size */
+    .bg-primary.bg-opacity-10,
+    .bg-success.bg-opacity-10, 
+    .bg-warning.bg-opacity-10 {
+        min-width: 44px !important;
+        min-height: 44px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        
+    }
+    
+    }
+
+</style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="blood-test.png" alt="Logo" width="30" height="30" class="d-inline-block align-text-top">
+                LifeFlow
+            </a>
+            
+            <!-- Right side: Mobile Only buttons -->
+            <div class="d-flex align-items-center d-lg-none">
+                <!-- Dark Mode Button - Mobile -->
+                <button class="btn btn-outline-light btn-sm me-2" id="darkModeToggleMobile" aria-label="Toggle dark mode">
+                    <i class="bi bi-moon-stars-fill" id="darkModeIconMobile"></i>
+                </button>
+
+                <!-- Logout Icon - Mobile -->
+                <a class="btn btn-outline-warning btn-sm me-2" href="index.html" title="Logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                </a>
+
+                <!-- Hamburger Menu - Mobile Only -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <!-- Navigation items on LEFT side -->
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="dashboard.html">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="donors.html">Donors</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="inventory.html">Inventory</a>
+                    </li>
+                </ul>
+
+                <!-- Right side items - Desktop Only -->
+                <div class="d-none d-lg-flex align-items-center">
+                    <!-- Dark Mode Button - Desktop -->
+                    <button class="btn btn-outline-light btn-sm me-2" id="darkModeToggleDesktop" aria-label="Toggle dark mode">
+                        <i class="bi bi-moon-stars-fill" id="darkModeIconDesktop"></i>
+                    </button>
+
+                    <!-- Logout Icon - Desktop -->
+                    <a class="btn btn-outline-warning btn-sm" href="index.html" title="Logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Dashboard Content -->
+    <div class="container mt-4">
+        <!-- FIXED HEADER WITH NEW DATE DISPLAY -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2>Blood Inventory Dashboard</h2>
+                <p class="text-muted mb-0">
+                    <i class="fas fa-user-md me-1"></i>
+                    <span id="timeGreeting">Good Morning, Admin</span>
+                </p>
+            </div>
+            
+         <!-- Date Display - Proper alignment for ALL screen sizes -->
+<div class="d-flex flex-nowrap align-items-center">
+    <!-- Day (SAT) - BIG -->
+    <div class="me-3">
+        <div class="display-3 fw-bolder text-dark mb-0 " id="klDayShort">SAT</div>
+    </div>
+
+    <!-- Vertical Line -->
+    <div class="border-start border-2 border-dark border-opacity-25 me-3" style="height: 70px;"></div>
+    
+    <!-- Date and Year stacked - TIGHT -->
+    <div class="d-flex flex-column justify-content-center" style="margin-top: 0;">
+        <!-- Date line (6 DEC) -->
+        <div class="d-flex align-items-baseline mb-0">
+            <span class="fs-4 fw-bold text-dark me-1" id="klDateNum">6</span>
+            <span class="fs-4 fw-bold text-dark" id="klMonthShort">DEC</span>
+        </div>
+        <!-- Year line (2025) -->
+        <div class="fs-3 fw-bold text-muted mb-0" id="klYearShort">2025</div>
+    </div>
+</div>
+        </div>
+        
+        <!-- Alerts Section -->
+        <div class="alert alert-blood alert-dismissible fade show" role="alert">
+            <strong><i class="fas fa-exclamation-triangle me-2"></i>Alert:</strong> 
+            Blood types AB+ and B- are running low. Consider scheduling donation drives.
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        
+        <!-- Summary Cards -->
+        <div class="row mt-4">
+            <div class="col-6 col-md-3 mb-3">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body p-3">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <h6 class="card-title text-muted mb-1">Total Donors</h6>
+                                <h2 class="mb-0">150</h2>
+                                <small class="text-muted">+5 this week</small>
+                            </div>
+                            <div class="ms-2">
+                                <i class="fas fa-users fa-2x text-primary opacity-75"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-transparent border-0 pt-0">
+                        <div class="border-start border-primary border-4 ps-2 small">
+                            <span class="text-primary fw-medium">Active: 119</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-6 col-md-3 mb-3">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body p-3">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <h6 class="card-title text-muted mb-1">Blood Units</h6>
+                                <h2 class="mb-0">45</h2>
+                                <small class="text-muted">+12 this month</small>
+                            </div>
+                            <div class="ms-2">
+                                <i class="fas fa-tint fa-2x text-danger opacity-75"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-transparent border-0 pt-0">
+                        <div class="border-start border-danger border-4 ps-2 small">
+                            <span class="text-danger fw-medium">Safe level: Good</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-6 col-md-3 mb-3">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body p-3">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <h6 class="card-title text-muted mb-1">Critical Types</h6>
+                                <h2 class="mb-0">2</h2>
+                                <small class="text-muted">Needs attention</small>
+                            </div>
+                            <div class="ms-2">
+                                <i class="fas fa-exclamation-triangle fa-2x text-warning opacity-75"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-transparent border-0 pt-0">
+                        <div class="border-start border-warning border-4 ps-2 small">
+                            <span class="text-warning fw-medium">AB+, B- low</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-6 col-md-3 mb-3">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body p-3">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <h6 class="card-title text-muted mb-1">Recent Donations</h6>
+                                <h2 class="mb-0">12</h2>
+                                <small class="text-muted">Last 7 days</small>
+                            </div>
+                            <div class="ms-2">
+                                <i class="fas fa-hand-holding-medical fa-2x text-info opacity-75"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-transparent border-0 pt-0">
+                        <div class="border-start border-info border-4 ps-2 small">
+                            <span class="text-info fw-medium">Avg: 1.7/day</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Row 1: Blood Type Chart and Table -->
+        <div class="row mt-4">
+            <!-- Blood Type Distribution Chart (Left) -->
+            <div class="col-12 col-lg-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0"><i class="fas fa-chart-pie me-2"></i>Blood Type Distribution</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="bloodPolarChart" style="height: 250px;"></div>
+                        
+                        <!-- Stats Panel -->
+                        <div class="p-3 border-top mt-3">
+                            <div class="row text-center g-2">
+                                <div class="col-4">
+                                    <div class="p-2 bg-light rounded">
+                                        <div class="text-danger fw-bold">45</div>
+                                        <small class="text-muted">O+ Donors</small>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="p-2 bg-light rounded">
+                                        <div class="text-warning fw-bold">2</div>
+                                        <small class="text-muted">Critical Types</small>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="p-2 bg-light rounded">
+                                        <div class="text-dark fw-bold">8 Types</div>
+                                        <small class="text-muted">Total Varieties</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Blood Type Distribution Table (Right) -->
+            <div class="col-12 col-lg-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0"><i class="fas fa-tint me-2"></i>Blood Type Data</h5>
+                        <span class="badge bg-danger">150 Donors</span>
+                    </div>
+                    <div class="card-body card-body-compact p-0">
+                        <div class="table-responsive">
+                            <table class="table table-sm table-hover mb-0 table-clean">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>Type</th>
+                                        <th>Donors</th>
+                                        <th>Percentage</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="badge bg-danger">O+</span></td>
+                                        <td><strong>45</strong></td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <span class="me-2" style="min-width: 40px;">30.0%</span>
+                                                <div class="percentage-bar">
+                                                    <div class="percentage-fill bg-success" style="width: 30%;"></div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td><span class="badge bg-success">Good</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-primary">A+</span></td>
+                                        <td><strong>36</strong></td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <span class="me-2" style="min-width: 40px;">24.0%</span>
+                                                <div class="percentage-bar">
+                                                    <div class="percentage-fill bg-success" style="width: 24%;"></div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td><span class="badge bg-success">Good</span></td>
+                                    </tr>
+                                    <tr>
+                                       <td><span class="badge bg-success">B+</span></td>
+                                        <td><strong>24</strong></td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <span class="me-2" style="min-width: 40px;">16.0%</span>
+                                                <div class="percentage-bar">
+                                                    <div class="percentage-fill bg-success" style="width: 16%;"></div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td><span class="badge bg-success">Good</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-purple">AB+</span></td>
+                                        <td><strong>18</strong></td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <span class="me-2" style="min-width: 40px;">12.0%</span>
+                                                <div class="percentage-bar">
+                                                    <div class="percentage-fill bg-warning" style="width: 12%;"></div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td><span class="badge bg-warning">Low</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-dark">O-</span></td>
+                                        <td><strong>12</strong></td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <span class="me-2" style="min-width: 40px;">8.0%</span>
+                                                <div class="percentage-bar">
+                                                    <div class="percentage-fill bg-success" style="width: 8%;"></div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td><span class="badge bg-success">Good</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-info">A-</span></td>
+                                        <td><strong>9</strong></td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <span class="me-2" style="min-width: 40px;">6.0%</span>
+                                                <div class="percentage-bar">
+                                                    <div class="percentage-fill bg-warning" style="width: 6%;"></div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td><span class="badge bg-warning">Low</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-warning">B-</span></td>
+                                        <td><strong>4</strong></td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <span class="me-2" style="min-width: 40px;">2.7%</span>
+                                                <div class="percentage-bar">
+                                                    <div class="percentage-fill bg-danger" style="width: 2.7%;"></div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td><span class="badge bg-danger">Critical</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-secondary">AB-</span></td>
+                                        <td><strong>2</strong></td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <span class="me-2" style="min-width: 40px;">1.3%</span>
+                                                <div class="percentage-bar">
+                                                    <div class="percentage-fill bg-danger" style="width: 1.3%;"></div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td><span class="badge bg-danger">Critical</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Row 2: Gender Charts -->
+        <div class="row mt-4">
+            <!-- Gender by Blood Type Table (Left) -->
+            <div class="col-12 col-lg-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0"><i class="fas fa-users me-2"></i>Gender by Blood Type</h5>
+                        <span class="badge bg-primary">150 Donors</span>
+                    </div>
+                    <div class="card-body card-body-compact p-0">
+                        <div class="table-responsive">
+                            <table class="table table-sm table-hover mb-0 table-clean">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>Gender</th>
+                                        <th>Blood Type</th>
+                                        <th>Donors</th>
+                                        <th>Avg. Donations</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><i class="fas fa-male text-primary me-1"></i><small>Male</small></td>
+                                        <td><span class="badge bg-danger">O+</span></td>
+                                        <td><strong>32</strong></td>
+                                        <td>2.4</td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fas fa-male text-primary me-1"></i><small>Male</small></td>
+                                        <td><span class="badge bg-primary">A+</span></td>
+                                        <td><strong>25</strong></td>
+                                        <td>2.6</td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fas fa-male text-primary me-1"></i><small>Male</small></td>
+                                        <td><span class="badge bg-success">B+</span></td>
+                                        <td><strong>18</strong></td>
+                                        <td>2.1</td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fas fa-male text-primary me-1"></i><small>Male</small></td>
+                                        <td><span class="badge bg-purple">AB+</span></td>
+                                        <td><strong>12</strong></td>
+                                        <td>1.8</td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fas fa-female text-danger me-1"></i><small>Female</small></td>
+                                        <td><span class="badge bg-danger">O+</span></td>
+                                        <td><strong>13</strong></td>
+                                        <td>1.6</td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fas fa-female text-danger me-1"></i><small>Female</small></td>
+                                        <td><span class="badge bg-primary">A+</span></td>
+                                        <td><strong>11</strong></td>
+                                        <td>1.8</td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fas fa-female text-danger me-1"></i><small>Female</small></td>
+                                        <td><span class="badge bg-success">B+</span></td>
+                                        <td><strong>6</strong></td>
+                                        <td>1.4</td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fas fa-female text-danger me-1"></i><small>Female</small></td>
+                                        <td><span class="badge bg-purple">AB+</span></td>
+                                        <td><strong>6</strong></td>
+                                        <td>1.3</td>
+                                    </tr>
+                                </tbody>
+                                <tfoot class="table-active">
+                                    <tr>
+                                        <td colspan="2"><strong>Total</strong></td>
+                                        <td><strong>123</strong></td>
+                                        <td><strong>2.0</strong></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Donor Gender Distribution Chart (Right) WITH STATS -->
+            <div class="col-12 col-lg-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header bg-dark text-white">
+                        <h5 class="card-title mb-0"><i class="fas fa-venus-mars me-2"></i>Donor Gender Distribution</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="genderChart" style="height: 250px;"></div>
+                        
+                        <!-- Gender Stats -->
+                        <div class="p-3 border-top mt-3">
+                            <div class="row text-center g-2">
+                                <div class="col-4">
+                                    <div class="p-2 bg-light rounded">
+                                        <div class="text-primary fw-bold">98</div>
+                                        <small class="text-muted">Male Donors</small>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="p-2 bg-light rounded">
+                                        <div class="text-danger fw-bold">52</div>
+                                        <small class="text-muted">Female Donors</small>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="p-2 bg-light rounded">
+                                        <div class="text-dark fw-bold">O+</div>
+                                        <small class="text-muted">Most Common</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Row 3: Left Side (4 columns) and Right Side (8 columns) -->
+        <div class="row mt-4">
+            <!-- LEFT COLUMN - 4 columns: Recent Activity + Blood Inventory Status (stacked) -->
+            <div class="col-12 col-md-4 mb-4">
+                <!-- Recent Activity Card -->
+                <div class="card mb-4">
+                    <div class="card-header bg-dark text-white">
+                        <h5 class="card-title mb-0"><i class="fas fa-history me-2"></i>Recent Activity</h5>
+                    </div>
+                    <div class="card-body card-body-compact">
+                        <div class="list-group list-group-flush">
+                            <div class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2">
+                                <div>
+                                    <i class="fas fa-user-plus text-success me-2"></i>
+                                    <span class="small">New donor registered</span>
+                                </div>
+                                <small class="text-muted">2h ago</small>
+                            </div>
+                            <div class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2">
+                                <div>
+                                    <i class="fas fa-tint text-danger me-2"></i>
+                                    <span class="small">Blood unit added</span>
+                                </div>
+                                <small class="text-muted">5h ago</small>
+                            </div>
+                            <div class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2">
+                                <div>
+                                    <i class="fas fa-syringe text-primary me-2"></i>
+                                    <span class="small">Donation completed</span>
+                                </div>
+                                <small class="text-muted">1d ago</small>
+                            </div>
+                            <div class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2">
+                                <div>
+                                    <i class="fas fa-exclamation-triangle text-warning me-2"></i>
+                                    <span class="small">Low stock alert</span>
+                                </div>
+                                <small class="text-muted">2d ago</small>
+                            </div>
+                            <div class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2">
+                                <div>
+                                    <i class="fas fa-heart text-danger me-2"></i>
+                                    <span class="small">Blood drive in Selangor</span>
+                                </div>
+                                <small class="text-muted">3d ago</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Blood Inventory Status Card -->
+                <div class="card">
+                    <div class="card-header bg-dark text-white">
+                        <h5 class="card-title mb-0"><i class="fas fa-vial me-2"></i>Blood Inventory Status</h5>
+                    </div>
+                    <div class="card-body card-body-compact">
+                        <div class="table-responsive">
+                            <table class="table table-sm table-hover mb-0 table-clean">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>Blood Type</th>
+                                        <th>Units</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="badge bg-primary">A+</span></td>
+                                        <td><strong>12</strong></td>
+                                        <td><span class="badge bg-success">Good</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-warning">B-</span></td>
+                                        <td><strong>6</strong></td>
+                                        <td><span class="badge bg-warning">Low</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-danger">O+</span></td>
+                                        <td><strong>15</strong></td>
+                                        <td><span class="badge bg-success">Good</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-purple">AB+</span></td>
+                                        <td><strong>2</strong></td>
+                                        <td><span class="badge bg-danger">Critical</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-success">B+</span></td>
+                                        <td><strong>8</strong></td>
+                                        <td><span class="badge bg-success">Good</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-info">A-</span></td>
+                                        <td><strong>4</strong></td>
+                                        <td><span class="badge bg-warning">Low</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT COLUMN - 8 columns: State Blood Donation Statistics -->
+            <div class="col-12 col-md-8 mb-4">
+                <div class="card h-100">
+                    <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0"><i class="fas fa-map-marked-alt me-2"></i>State Blood Donation Statistics</h5>
+                        <span class="badge bg-danger">150 Total Donors</span>
+                    </div>
+                    <div class="card-body card-body-compact p-0">
+                        <div class="table-responsive">
+                            <table class="table table-sm table-hover mb-0 table-clean">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>State</th>
+                                        <th>Total Donors</th>
+                                        <th>Active</th>
+                                        <th>% of Total</th>
+                                        <th>Most Common Type</th>
+                                        <th>Critical Types</th>
+                                        <th>Frequency</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Selangor -->
+                                    <tr>
+                                        <td>
+                                            <img src="https://raw.githubusercontent.com/PKomS-UiTM/Dashboard-Data/main/images/selangor.jpg" class="state-flag" alt="Selangor">
+                                            Selangor
+                                        </td>
+                                        <td><strong>32</strong></td>
+                                        <td>26</td>
+                                        <td>21.3%</td>
+                                        <td><span class="badge bg-danger">O+</span></td>
+                                        <td class="critical-types">
+                                            <span class="badge bg-purple">AB+</span>
+                                            <span class="badge bg-warning">B-</span>
+                                        </td>
+                                        <td><span class="badge frequency-high">High</span></td>
+                                    </tr>
+                                    
+                                    <!-- Kuala Lumpur -->
+                                    <tr>
+                                        <td>
+                                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Flag_of_Kuala_Lumpur%2C_Malaysia.svg/2560px-Flag_of_Kuala_Lumpur%2C_Malaysia.svg.png" alt="KL Flag" class="state-flag">
+                                            Kuala Lumpur
+                                        </td>
+                                        <td><strong>28</strong></td>
+                                        <td>22</td>
+                                        <td>18.7%</td>
+                                        <td><span class="badge bg-primary">A+</span></td>
+                                        <td class="critical-types">
+                                            <span class="badge bg-dark">O-</span>
+                                        </td>
+                                        <td><span class="badge frequency-high">High</span></td>
+                                    </tr>
+                                    
+                                    <!-- Johor -->
+                                    <tr>
+                                        <td>
+                                            <img src="https://raw.githubusercontent.com/PKomS-UiTM/Dashboard-Data/main/images/johor.jpg" alt="Johor Flag" class="state-flag">
+                                            Johor
+                                        </td>
+                                        <td><strong>22</strong></td>
+                                        <td>18</td>
+                                        <td>14.7%</td>
+                                        <td><span class="badge bg-success">B+</span></td>
+                                        <td class="critical-types">
+                                            <span class="badge bg-secondary">AB-</span>
+                                        </td>
+                                        <td><span class="badge frequency-medium">Medium</span></td>
+                                    </tr>
+                                    
+                                    <!-- Penang -->
+                                    <tr>
+                                        <td>
+                                            <img src="https://raw.githubusercontent.com/PKomS-UiTM/Dashboard-Data/main/images/penang.jpg" alt="penang Flag" class="state-flag">
+                                            Penang
+                                        </td>
+                                        <td><strong>19</strong></td>
+                                        <td>15</td>
+                                        <td>12.7%</td>
+                                        <td><span class="badge bg-danger">O+</span></td>
+                                        <td class="critical-types">
+                                            <span class="badge bg-info">A-</span>
+                                        </td>
+                                        <td><span class="badge frequency-medium">Medium</span></td>
+                                    </tr>
+                                    
+                                    <!-- Perak -->
+                                    <tr>
+                                        <td>
+                                            <img src="https://raw.githubusercontent.com/PKomS-UiTM/Dashboard-Data/main/images/perak.jpg" alt="Perak Flag" class="state-flag">
+                                            Perak
+                                        </td>
+                                        <td><strong>17</strong></td>
+                                        <td>13</td>
+                                        <td>11.3%</td>
+                                        <td><span class="badge bg-primary">A+</span></td>
+                                        <td class="critical-types">
+                                            <span class="badge bg-warning">B-</span>
+                                        </td>
+                                        <td><span class="badge frequency-medium">Medium</span></td>
+                                    </tr>
+                                    
+                                    <!-- Sabah -->
+                                    <tr>
+                                        <td>
+                                            <img src="https://raw.githubusercontent.com/PKomS-UiTM/Dashboard-Data/main/images/sabah.jpg" alt="Sabah Flag" class="state-flag">
+                                            Sabah
+                                        </td>
+                                        <td><strong>15</strong></td>
+                                        <td>12</td>
+                                        <td>10.0%</td>
+                                        <td><span class="badge bg-danger">O+</span></td>
+                                        <td class="critical-types">
+                                            <span class="badge bg-purple">AB+</span>
+                                        </td>
+                                        <td><span class="badge frequency-medium">Medium</span></td>
+                                    </tr>
+                                    
+                                    <!-- Sarawak -->
+                                    <tr>
+                                        <td>
+                                            <img src="https://raw.githubusercontent.com/PKomS-UiTM/Dashboard-Data/main/images/sarawak.jpeg" alt="Sarawak Flag" class="state-flag">
+                                            Sarawak
+                                        </td>
+                                        <td><strong>13</strong></td>
+                                        <td>10</td>
+                                        <td>8.7%</td>
+                                        <td><span class="badge bg-success">B+</span></td>
+                                        <td class="critical-types">
+                                            <span class="badge bg-dark">O-</span>
+                                        </td>
+                                        <td><span class="badge frequency-medium">Medium</span></td>
+                                    </tr>
+                                    
+                                    <!-- Others -->
+                                    <tr>
+                                        <td>
+                                            <img src="https://flagcdn.com/w20/my.png" alt="Malaysia Flag" class="state-flag">
+                                            Others*
+                                        </td>
+                                        <td><strong>4</strong></td>
+                                        <td>3</td>
+                                        <td>2.7%</td>
+                                        <td><span class="badge bg-primary">A+</span></td>
+                                        <td class="critical-types text-muted">
+                                            None
+                                        </td>
+                                        <td><span class="badge frequency-low">Low</span></td>
+                                    </tr>
+                                    
+                                    <!-- Summary Row -->
+                                    <tr class="table-active">
+                                        <td><strong>Total</strong></td>
+                                        <td><strong>150</strong></td>
+                                        <td><strong>119</strong></td>
+                                        <td><strong>100%</strong></td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="7" class="text-muted small p-2">
+                                            *Others include: Kedah (2), Pahang (1), Kelantan (1)
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        
+                        <!-- Key Insights -->
+                        <div class="p-3 border-top">
+                            <h6 class="mb-4"><i class="fas fa-chart-line me-1"></i> Key Insights :</h6>
+                            <div class="row g-2">
+                                <div class="col-12 col-sm-4">
+                                    <div class="d-flex align-items-center">
+                                        <div class="bg-primary bg-opacity-10 p-2 rounded me-2">
+                                            <i class="fas fa-city text-primary"></i>
+                                        </div>
+                                        <div>
+                                            <small class="text-muted d-block">Urban Concentration</small>
+                                            <span class="fw-bold">40% from Selangor + KL</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-12 col-sm-4">
+                                    <div class="d-flex align-items-center">
+                                        <div class="bg-success bg-opacity-10 p-2 rounded me-2">
+                                            <i class="fas fa-heartbeat text-success"></i>
+                                        </div>
+                                        <div>
+                                            <small class="text-muted d-block">Active Donor Rate</small>
+                                            <span class="fw-bold">79% active (119/150)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-12 col-sm-4">
+                                    <div class="d-flex align-items-center">
+                                        <div class="bg-warning bg-opacity-10 p-2 rounded me-2">
+                                            <i class="fas fa-truck-medical text-warning"></i>
+                                        </div>
+                                        <div>
+                                            <small class="text-muted d-block">Supply Chain</small>
+                                            <span class="fw-bold">88% from top 6 states</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-light mt-5 pt-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 mb-4">
+                    <h6 class="text-danger mb-3"><i class="fas fa-tint me-1"></i> Quick Stats</h6>
+                    <div class="row g-2">
+                        <div class="col-6">
+                            <div class="bg-dark rounded p-2 border-start border-danger border-3">
+                                <div class="text-danger fw-bold">150</div>
+                                <small class="opacity-75">Donors</small>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="bg-dark rounded p-2 border-start border-primary border-3">
+                                <div class="text-primary fw-bold">119</div>
+                                <small class="opacity-75">Active</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-3 mb-4">
+                    <h6 class="text-danger mb-3"><i class="fas fa-clock me-1"></i> Operation Hours</h6>
+                    <ul class="list-unstyled small">
+                        <li class="mb-1">Mon-Fri: 8:00 AM - 8:00 PM</li>
+                        <li class="mb-1">Saturday: 9:00 AM - 5:00 PM</li>
+                        <li class="mb-1">Sunday: 10:00 AM - 4:00 PM</li>
+                        <li class="mb-1 text-danger">Emergency: 24/7</li>
+                    </ul>
+                </div>
+                
+                <div class="col-md-3 mb-4">
+                    <h6 class="text-danger mb-3"><i class="fas fa-link me-1"></i> Quick Links</h6>
+                    <ul class="list-unstyled small">
+                        <li class="mb-1"><a href="dashboard.html" class="text-light text-decoration-none">Dashboard</a></li>
+                        <li class="mb-1"><a href="donors.html" class="text-light text-decoration-none">Donor List</a></li>
+                        <li class="mb-1"><a href="inventory.html" class="text-light text-decoration-none">Inventory</a></li>
+                        <li class="mb-1"><a href="#" class="text-light text-decoration-none">Schedule Donation</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-md-3 mb-4">
+                    <h6 class="text-danger mb-3"><i class="fas fa-address-card me-1"></i> Contact</h6>
+                    <ul class="list-unstyled small">
+                        <li class="mb-2">
+                            <i class="fas fa-map-marker-alt text-danger me-2"></i>
+                            123 LifeFlow Center, KL
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-phone text-danger me-2"></i>
+                            +60 89-673 903
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-envelope text-danger me-2"></i>
+                            donate@lifeflow.com
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <hr class="opacity-25">
+            
+            <div class="text-center pt-3">
+                <p class="mb-0 small opacity-75">
+                    <i class="fas fa-shield-alt me-1"></i> Licensed by Ministry of Health Malaysia | 
+                    <i class="fas fa-heart text-danger me-1 ms-2"></i> Registered Charity: LFL-2025-001
+                </p>
+                <p class="mt-2 small opacity-50">
+                    &copy; 2025 LifeFlow Blood Donation Center. Version 2.1.0
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Chart Script -->
+    <script>
+        // Global chart references
+        window.bloodPolarChart = null;
+        window.genderChart = null;
+
+        // Update Greeting
+        function updateGreeting() {
+            const hour = new Date().getHours();
+            const greetingElement = document.getElementById('timeGreeting');
+            
+            if (hour < 12) {
+                greetingElement.textContent = 'Good Morning, Admin';
+            } else if (hour < 18) {
+                greetingElement.textContent = 'Good Afternoon, Admin';
+            } else {
+                greetingElement.textContent = 'Good Evening, Admin';
+            }
+        }
+
+        // Update New Date Display
+        function updateNewDateDisplay() {
+            const now = new Date();
+            
+            const dayNames = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+            const monthNames = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 
+                               'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+            
+            // Check if elements exist before updating
+            if (document.getElementById('klDayShort')) {
+                document.getElementById('klDayShort').textContent = dayNames[now.getDay()];
+            }
+            if (document.getElementById('klDateNum')) {
+                document.getElementById('klDateNum').textContent = now.getDate();
+            }
+            if (document.getElementById('klMonthShort')) {
+                document.getElementById('klMonthShort').textContent = monthNames[now.getMonth()];
+            }
+            if (document.getElementById('klYearShort')) {
+                document.getElementById('klYearShort').textContent = now.getFullYear();
+            }
+        }
+
+        // Chart Initialization
+        function initCharts() {
+            // Check if chart containers exist
+            if (!document.getElementById("bloodPolarChart") || !document.getElementById("genderChart")) {
+                console.warn("Chart containers not found, skipping chart initialization");
+                return;
+            }
+            
+            // Get current theme for legend colors
+            const isDarkMode = document.documentElement.getAttribute('data-bs-theme') === 'dark';
+            const legendColor = isDarkMode ? '#ffffff' : '#6b7280';
+            const textColor = isDarkMode ? '#ffffff' : '#111827';
+            
+            // ApexCharts Polar Area Chart for Blood Type Distribution
+            const polarOptions = {
+                series: [45, 36, 24, 18, 12, 9, 4, 2],
+                chart: {
+                    type: 'polarArea',
+                    height: 250,
+                    toolbar: { show: false }
+                },
+                labels: ['O+', 'A+', 'B+', 'AB+', 'O-', 'A-', 'B-', 'AB-'],
+                stroke: { colors: ['#fff'], width: 2 },
+                fill: { opacity: 0.8 },
+                colors: ['#DC2626', '#0d6efd', '#198754', '#6f42c1', '#0dcaf0', '#ffc107', '#dc3545', '#6c757d'],
+                yaxis: { show: false },
+                legend: {
+                    position: 'bottom',
+                    horizontalAlign: 'center',
+                    fontSize: '16px',
+                    labels: { 
+                        colors: legendColor,
+                        useSeriesColors: false 
+                    }
+                },
+                tooltip: {
+                    y: {
+                        formatter: function(val, { seriesIndex, w }) {
+                            const percentages = [30.0, 24.0, 16.0, 12.0, 8.0, 6.0, 2.7, 1.3];
+                            if (seriesIndex >= 0 && seriesIndex < percentages.length) {
+                                return `${val} donors (${percentages[seriesIndex]}%)`;
+                            }
+                            return `${val} donors`;
+                        }
+                    },
+                    theme: isDarkMode ? 'dark' : 'light'
+                },
+                responsive: [{
+                    breakpoint: 768,
+                    options: {
+                        chart: { height: 220 },
+                        legend: { position: 'bottom' }
+                    }
+                }]
+            };
+
+            window.bloodPolarChart = new ApexCharts(document.querySelector("#bloodPolarChart"), polarOptions);
+            window.bloodPolarChart.render();
+
+            // ApexCharts Gender Comparison Chart
+            const genderChartOptions = {
+                series: [65.3, 34.7],
+                chart: {
+                    type: 'donut',
+                    height: 250,
+                    toolbar: { show: false }
+                },
+                colors: ['#3b82f6', '#ef4444'],
+                labels: ['Male', 'Female'],
+                plotOptions: {
+                    pie: {
+                        donut: {
+                            size: '60%',
+                            labels: {
+                                show: true,
+                                name: {
+                                    show: true,
+                                    fontSize: '14px',
+                                    fontWeight: 600,
+                                    color: legendColor
+                                },
+                                value: {
+                                    show: true,
+                                    fontSize: '20px',
+                                    fontWeight: 700,
+                                    color: textColor,
+                                    formatter: function (val) {
+                                        return val + "%"
+                                    }
+                                },
+                                total: {
+                                    show: true,
+                                    label: 'Total',
+                                    color: legendColor,
+                                    fontSize: '14px',
+                                    formatter: function (w) {
+                                        return '100%'
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                dataLabels: { enabled: false },
+                legend: {
+                    position: 'bottom',
+                    horizontalAlign: 'center',
+                    fontSize: '12px',
+                    markers: { width: 10, height: 10, radius: 5 },
+                    labels: { 
+                        colors: legendColor,
+                        useSeriesColors: false 
+                    }
+                },
+                tooltip: {
+                    y: {
+                        formatter: function (val) {
+                            return val + "% (" + Math.round((val/100) * 150) + " donors)"
+                        }
+                    },
+                    theme: isDarkMode ? 'dark' : 'light'
+                },
+                responsive: [{
+                    breakpoint: 768,
+                    options: {
+                        chart: { height: 220 },
+                        legend: { position: 'bottom' }
+                    }
+                }]
+            };
+
+            window.genderChart = new ApexCharts(document.querySelector("#genderChart"), genderChartOptions);
+            window.genderChart.render();
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            updateGreeting();
+            updateNewDateDisplay();
+
+            document.body.style.zoom = "80%";
+            
+            
+            // Initialize theme
+            const currentTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-bs-theme', currentTheme);
+            
+            // Initialize charts
+            initCharts();
+            
+            // Setup dark mode toggles
+            const darkModeToggleMobile = document.getElementById('darkModeToggleMobile');
+            const darkModeToggleDesktop = document.getElementById('darkModeToggleDesktop');
+            const darkModeIconMobile = document.getElementById('darkModeIconMobile');
+            const darkModeIconDesktop = document.getElementById('darkModeIconDesktop');
+            const htmlElement = document.documentElement;
+            
+            // Update icons based on current theme
+            function updateIcons(theme) {
+                if (theme === 'dark') {
+                    darkModeIconMobile.className = 'bi bi-sun-fill';
+                    darkModeIconDesktop.className = 'bi bi-sun-fill';
+                } else {
+                    darkModeIconMobile.className = 'bi bi-moon-stars-fill';
+                    darkModeIconDesktop.className = 'bi bi-moon-stars-fill';
+                }
+            }
+            
+            updateIcons(currentTheme);
+            
+            // Dark mode toggle function
+            function toggleDarkMode() {
+                const currentTheme = htmlElement.getAttribute('data-bs-theme');
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+
+                htmlElement.setAttribute('data-bs-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                updateIcons(newTheme);
+
+                
+                
+                // Update chart colors
+                const legendColor = newTheme === 'dark' ? '#ffffff' : '#6b7280';
+                const textColor = newTheme === 'dark' ? '#ffffff' : '#111827';
+                
+                if (window.genderChart) {
+                    window.genderChart.updateOptions({
+                        legend: { 
+                            labels: { 
+                                colors: legendColor,
+                                useSeriesColors: false 
+                            }
+                        },
+                        tooltip: { theme: newTheme },
+                        plotOptions: {
+                            pie: {
+                                donut: {
+                                    labels: {
+                                        name: { color: legendColor },
+                                        value: { color: textColor },
+                                        total: { color: legendColor }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+                
+                if (window.bloodPolarChart) {
+                    window.bloodPolarChart.updateOptions({
+                        legend: { 
+                            labels: { 
+                                colors: legendColor,
+                                useSeriesColors: false 
+                            }
+                        },
+                        tooltip: { theme: newTheme }
+                    });
+                }
+            }
+            
+            // Add event listeners to both buttons
+            darkModeToggleMobile.addEventListener('click', toggleDarkMode);
+            darkModeToggleDesktop.addEventListener('click', toggleDarkMode);
+            
+            // Handle broken flag images
+            document.querySelectorAll('.state-flag').forEach(img => {
+                img.addEventListener('error', function() {
+                    this.src = 'https://flagcdn.com/w20/my.png';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
